@@ -38,5 +38,5 @@ def addQA(question, label, answer):
   train_data = pd.read_pickle ("my_data.pkl")
 
 
-return_answer('오랫만이네')
+return_answer('기분이 안좋아')
 
