@@ -7,6 +7,7 @@ from sentence_transformers import SentenceTransformer
 
 class Config:
   def __init__(self): 
+    print("init..")
     self.train_data = pd.read_pickle ("my_data.pkl")
     self.train_data.head()
     self.model = SentenceTransformer('sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens')
