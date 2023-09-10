@@ -5,20 +5,22 @@ from numpy.linalg import norm
 import urllib.request
 from sentence_transformers import SentenceTransformer
 
+class Config:
+  def __init__(self): 
+    self.train_data = pd.read_pickle ("my_data.pkl")
+    self.train_data.head()
+    self.model = SentenceTransformer('sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens')
 
-train_data = pd.read_pickle ("my_data.pkl")
+cfg = Config();
 
-train_data.head()
-
-model = SentenceTransformer('sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens')
-
-def cos_sim(A, B):
+def _cos_sim(A, B):
   return dot(A, B)/(norm(A)*norm(B))
 
 def return_answer(question):
-    embedding = model.encode(question)
-    train_data['score'] = train_data.apply(lambda x: cos_sim(x['embedding'], embedding), axis=1)
-    return train_data.loc[train_data['score'].idxmax()]['A']
+    
+    embedding = cfg.model.encode(question)
+    cfg.train_data['score'] = cfg.train_data.apply(lambda x: _cos_sim(x['embedding'], embedding), axis=1)
+    return cfg.train_data.loc[cfg.train_data['score'].idxmax()]['A']
 
    
 def addQA(question, label, answer):
@@ -37,6 +39,7 @@ def addQA(question, label, answer):
 
   train_data = pd.read_pickle ("my_data.pkl")
 
-
-return_answer('기분이 안좋아')
+if __name__ == "__main__":
+  res=return_answer('기분이 안좋아')
+  print(res)
 
